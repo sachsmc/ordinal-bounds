@@ -8,24 +8,28 @@
 This repository contains R functions to compute nonparametric bounds on
 measures of benefit for ordinal outcomes in settings with noncompliance.
 The bounds expressions are complicated but the functions are easy to
-use. They take as inputs the conditional probabilities of the form $$
-p\{X = x, Y = y | Z = z\}
-$$ with $y \in \{0, 1, \ldots, K - 1\}, x \in \{0, 1\},$ and
-$z \in \{0, 1\}$. We denote these in the code as `pxy_z`
+use. They take as inputs the conditional probabilities of the form
+
+$$
+p(X = x, Y = y | Z = z)
+$$
+
+with $y \in (0, 1, \ldots, K - 1), x \in (0, 1),$ and $z \in (0, 1)$. We
+denote these in the code as `pxy_z`
 
 We provide bounds functions for $K = 3, 4, 5, 6, 7$ in the instrumental
 variable setting with and without the no defiers assumption for
 
 $$
-\psi = p\{Y_i(1) \geq Y_i(0)\}, \mbox{ the probability of no harm,}
+\psi = p(Y_i(1) \geq Y_i(0)), \mbox{ the probability of no harm,}
 $$
 
 $$
-\theta = p\{Y_i(1) > Y_i(0)\}, \mbox{ the probability of benefit, and}
+\theta = p(Y_i(1) > Y_i(0)), \mbox{ the probability of benefit, and}
 $$
 
 $$
-\phi = p\{Y_i(1) > Y_i(0)\} - p\{Y_i(1) < Y_i(0)\}, \mbox{ the relative treatment effect}.
+\phi = p(Y_i(1) > Y_i(0)) - p(Y_i(1) < Y_i(0)), \mbox{ the relative treatment effect}.
 $$
 
 See the manuscript <https://arxiv.org/abs/2305.10555> for more details.
@@ -39,52 +43,52 @@ source("generate-data.R")
 exdata <- generate_dataset(n = 150, K = 4, scenario = "noncompliance")
 exdata$trueP
 #> $p00_0
-#> [1] 0.07174917
+#> [1] 0.03377209
 #> 
 #> $p01_0
-#> [1] 0.05992086
+#> [1] 0.05168947
 #> 
 #> $p02_0
-#> [1] 0.05405283
+#> [1] 0.07230853
 #> 
 #> $p03_0
-#> [1] 0.04720731
+#> [1] 0.1315845
 #> 
 #> $p10_0
-#> [1] 0.08041503
+#> [1] 0.1499474
 #> 
 #> $p11_0
-#> [1] 0.129456
+#> [1] 0.1655966
 #> 
 #> $p12_0
-#> [1] 0.1888132
+#> [1] 0.1813162
 #> 
 #> $p13_0
-#> [1] 0.3683856
+#> [1] 0.2137852
 #> 
 #> $p00_1
-#> [1] 0.1056109
+#> [1] 0.2488561
 #> 
 #> $p01_1
-#> [1] 0.1226176
+#> [1] 0.1953648
 #> 
 #> $p02_1
-#> [1] 0.1413355
+#> [1] 0.1878757
 #> 
 #> $p03_1
-#> [1] 0.1839872
+#> [1] 0.2182795
 #> 
 #> $p10_1
-#> [1] 0.02793028
+#> [1] 0.02013578
 #> 
 #> $p11_1
-#> [1] 0.058523
+#> [1] 0.02972606
 #> 
 #> $p12_1
-#> [1] 0.1021393
+#> [1] 0.03931386
 #> 
 #> $p13_1
-#> [1] 0.2578562
+#> [1] 0.06046035
 ```
 
 Find the corresponding bounds functions and source them.
@@ -93,13 +97,13 @@ Find the corresponding bounds functions and source them.
 source("bounds-source/phi-K-four.R")
 do.call(phi_bounds_K_four_noncomp, exdata$trueP)
 #>        lower     upper
-#> 1 -0.5260034 0.7355977
+#> 1 -0.4818838 0.6317731
 
 
 source("bounds-source/theta-K-four.R")
 do.call(theta_bounds_K_four_noncomp_nodefiers, exdata$trueP)
-#>        lower     upper
-#> 1 0.02685925 0.7880825
+#>   lower     upper
+#> 1     0 0.6806982
 ```
 
 View the source and arguments
@@ -124,7 +128,7 @@ theta_bounds_K_four_noncomp_nodefiers
 #>     }
 #>     data.frame(lower = lb, upper = ub)
 #> }
-#> <bytecode: 0x00000219c6d24268>
+#> <bytecode: 0x000001fff4d18a00>
 formals(theta_bounds_K_four_noncomp_nodefiers)
 #> $p00_0
 #> NULL
