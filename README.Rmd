@@ -1,0 +1,72 @@
+---
+output: github_document
+editor_options: 
+  chunk_output_type: console
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+# Sharp symbolic nonparametric bounds for measures of benefit in observational and imperfect randomized studies with ordinal outcomes -- Code
+
+### Authors: Erin E Gabriel, Michael C Sachs, Andreas Kryger Jensen
+
+This repository contains R functions to compute nonparametric bounds on measures of benefit for ordinal outcomes in settings with noncompliance. The bounds expressions are complicated but the functions are easy to use. They take as inputs the conditional probabilities of the form 
+$$
+p\{X = x, Y = y | Z = z\}
+$$
+with $y \in \{0, 1, \ldots, K - 1\}, x \in \{0, 1\},$ and $z \in \{0, 1\}$. We denote these in the code as `pxy_z` 
+
+We provide bounds functions for $K = 3, 4, 5, 6, 7$ in the instrumental variable setting with and without the no defiers assumption for 
+
+$$
+\psi = p\{Y_i(1) \geq Y_i(0)\}, \mbox{ the probability of no harm,}
+$$
+
+$$
+\theta = p\{Y_i(1) > Y_i(0)\}, \mbox{ the probability of benefit, and}
+$$
+
+$$
+\phi = p\{Y_i(1) > Y_i(0)\} - p\{Y_i(1) < Y_i(0)\}, \mbox{ the relative treatment effect}.
+$$
+
+See the manuscript <https://arxiv.org/abs/2305.10555> for more details. 
+
+
+## Example usage
+
+Generate some true probabilities and example data from that distribution
+
+```{r}
+source("generate-data.R")
+exdata <- generate_dataset(n = 150, K = 4, scenario = "noncompliance")
+exdata$trueP
+```
+
+
+Find the corresponding bounds functions and source them. 
+
+```{r}
+source("bounds-source/phi-K-four.R")
+do.call(phi_bounds_K_four_noncomp, exdata$trueP)
+
+
+source("bounds-source/theta-K-four.R")
+do.call(theta_bounds_K_four_noncomp_nodefiers, exdata$trueP)
+```
+
+
+View the source and arguments
+
+```{r}
+theta_bounds_K_four_noncomp_nodefiers
+formals(theta_bounds_K_four_noncomp_nodefiers)
+```
